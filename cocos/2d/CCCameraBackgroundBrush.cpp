@@ -126,9 +126,17 @@ void CameraBackgroundDepthBrush::drawBackground(Camera* camera)
     GLboolean oldDepthTest;
     GLint oldDepthFunc;
     GLboolean oldDepthMask;
+  
+    GLint oldViewport[4];
+    glGetIntegerv(GL_VIEWPORT, oldViewport);
+  
+    auto fullsize = Director::getInstance()->getWinSize();
+    glViewport(0, 0, fullsize.width, fullsize.height);
+
     {
         glColorMask(_clearColor, _clearColor, _clearColor, _clearColor);
         glStencilMask(0);
+        glDisable(GL_SCISSOR_TEST);
         
         oldDepthTest = glIsEnabled(GL_DEPTH_TEST);
         glGetIntegerv(GL_DEPTH_FUNC, &oldDepthFunc);
@@ -185,6 +193,8 @@ void CameraBackgroundDepthBrush::drawBackground(Camera* camera)
         glStencilMask(0xFFFFF);
         //        RenderState::StateBlock::_defaultState->setStencilWrite(0xFFFFF);
         
+        glViewport(oldViewport[0],oldViewport[1], oldViewport[2], oldViewport[3]);
+      
         /* BUG: RenderState does not support glColorMask yet. */
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     }
