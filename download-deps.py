@@ -289,6 +289,12 @@ def _remove_flatbuffers(workpath):
         shutil.rmtree(flatbuffers_path)
         print("==> external/flatbuffers removed!")
 
+def _remove_cocostudio(workpath):
+    cocostudio_path = os.path.join(workpath, "cocos", "editor-support", "cocostudio")
+    if os.path.isdir(cocostudio_path):
+        shutil.rmtree(cocostudio_path)
+        print("==> cocos/editor-support/cocostudio removed!")
+
 def main():
     workpath = os.path.dirname(os.path.realpath(__file__))
 
@@ -316,6 +322,7 @@ def main():
     installer = CocosZipInstaller(workpath, os.path.join(workpath, 'external', 'config.json'), os.path.join(workpath, 'external', 'version.json'), "prebuilt_libs_version")
     installer.run(workpath, external_path, opts.remove_downloaded, opts.force_update, opts.download_only)
     _remove_flatbuffers(workpath)
+    _remove_cocostudio(workpath)
 
 # -------------- main --------------
 if __name__ == '__main__':
